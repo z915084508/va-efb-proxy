@@ -1,11 +1,16 @@
 import express from "express";
-import fetch from "node-fetch";
 import cors from "cors";
+import fetch from "node-fetch";
 
+const app = express();          // ✅ 先初始化
+app.use(express.json());        // ✅ 再挂中间件
 app.use(cors({
   origin: "*",
-  allowedHeaders: ["Content-Type", "X-VA-User"],
+  allowedHeaders: ["Content-Type", "X-VA-User"]
 }));
+
+// 下面再写 API_BASE / getToken / 路由 ...
+
 
 
 const app = express();
