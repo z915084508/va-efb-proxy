@@ -1,5 +1,12 @@
 import express from "express";
 import fetch from "node-fetch";
+import cors from "cors";
+
+app.use(cors({
+  origin: "*",
+  allowedHeaders: ["Content-Type", "X-VA-User"],
+}));
+
 
 const app = express();
 app.use(express.json());
@@ -42,6 +49,21 @@ async function getToken() {
 
   return cachedToken;
 }
+app.get("/api/_debug/flights-raw", async (req, res) => {
+  try {
+    const token = await getToken();
+    const r = await fetch(`${API_BASE}/flights`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await r.json();
+    res.json(data);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: String(e) });
+  }
+});
+
 
 /* ===== Example: flights ===== */
 app.get("/api/flights", async (req, res) => {
